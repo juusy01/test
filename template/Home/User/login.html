@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>用户登陆系统</title>
+	<script type="text/javascript" src="{$Think.STATIC_PUBLIC}Home/Static/js/jquery.min.js"></script>
+</head>
+<script type="text/javascript">
+  $(function(){
+  $("#form1").submit(function(){
+  var usernameVal = $("#username").val();
+ // alert(usernameVal);
+  var passwordVal = $("#password").val();
+ 
+  if(!(/^[\w]{6,20}$/.test(usernameVal)))
+  {
+     alert('用户名不合法');
+	 $("#username").focus();
+	 return false;
+	 
+   }
+ 
+  if(passwordVal.length>6){
+  if(!(/[\d]+/.test(passwordVal))){
+     alert('数字');
+	 $('#password').focus();
+	 return false;
+  }else if(!(/[a-z]+/.test(passwordVal))){
+    alert('小写字母');
+	 $('#password').focus();
+	 return false;
+  }else if(!(/[A-Z]+/.test(passwordVal))){
+    alert('大写字母');
+	 $('#password').focus();
+	 return false;
+  }
+  }else{
+    alert('密码要大于6位数');
+	$('#password').focus();
+	return false;
+  }
+  
+  $.ajax({
+    type:'post',
+    url:"http://<?php echo $_SERVER['HTTP_HOST'];?>{:U('Home/User/login')}",
+	dataType:'text',
+    data:{"username":usernameVal,"password":passwordVal},
+    success:function(data)
+    {
+	
+       if(data==1)
+	   {
+         $("#result").html("<span style='color:red;'>发送成功！</span>");
+       }else{
+	     $("#result").html("<span style='color:red;'>请求失败！</span>");
+	   }
+	
+    }
+  
+  })
+ 
+  return false;
+  })
+  })
+</script>
+<body>
+<div id="result"></div>
+<form action="" method="" id="form1">
+   用户名：<input type="text" name="username" id="username" /><br/>
+   密码：<input type="password" name="password" id="password" /><br/>
+   <input type="submit" value="登陆" />
+</form>
+<div id="data"></div>
+</body>
+</html>
