@@ -22,7 +22,7 @@
  
   if(passwordVal.length>6){
   if(!(/[\d]+/.test(passwordVal))){
-     alert('数字');
+     alert('必须含有数字');
 	 $('#password').focus();
 	 return false;
   }else if(!(/[a-z]+/.test(passwordVal))){
